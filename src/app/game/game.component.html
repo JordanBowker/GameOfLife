@@ -1,0 +1,14 @@
+<h1>
+  Timer {{ timer$ |async }}!
+</h1>
+<button (click)="start()">Start</button>
+<button (click)="stop()">Stop</button>
+
+<div class="form-group">
+  <label for="tps">Ticks Per Second</label>
+  <select class="form-control" name="tps" [(ngModel)]="ticksPerSecond">
+    <option [value]="0.5" [selected]="ticksPerSecond ==0.5">0.5</option>
+    <option [value]="1" [selected]="ticksPerSecond ==1">1</option>
+    <option [value]="2" [selected]="ticksPerSecond ==2">2</option>
+  </select>
+</div>
