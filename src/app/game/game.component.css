@@ -1,0 +1,13 @@
+.aliveCell{
+    background-color: black;
+}
+.deadCell{
+    background-color: white;
+}
+
+td { display: block; float: left; border: 0.1px solid black;}
+
+td div { position: absolute }
+table { display: block; width: 100%; }
+tr { display: block; width: 100%; }
+tbody { display: block; width: 100%; } 

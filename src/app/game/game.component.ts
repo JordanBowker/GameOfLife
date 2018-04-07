@@ -1,11 +1,10 @@
-import { switchMap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { interval } from 'rxjs/observable/interval';
-import { never } from 'rxjs/observable/never';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/switchMap';
+
+import { GameService } from './game.service';
+import { GameGrid } from './gameGrid';
+import { Cell } from './cell';
 
 @Component({
   selector: 'app-game',
@@ -14,32 +13,26 @@ import 'rxjs/add/operator/switchMap';
 })
 export class GameComponent implements OnInit, OnDestroy {
 
-  ticksPerSecond = 1;
-
-  private _timer = new Subject<number>();
-  private _hasStarted = new Subject<boolean>();
+  css = 'red';
   private _takeUntil = new Subject<boolean>();
 
-  private _timer$ = this._timer.asObservable().switchMap(ticks => interval(ticks));
-  private hasStarted$ = this._hasStarted.asObservable();
+  gameGrid$ = this._gameService.gameGrid$.takeUntil(this._takeUntil);
 
-  timer$ = this.hasStarted$.switchMap((started) => started ? this._timer$ : never()).takeUntil(this._takeUntil);
-
-  start(): void {
-    this._hasStarted.next(true);
-    this._timer.next(1000 / this.ticksPerSecond);
+  constructor(private _gameService: GameService) {
   }
-
-  stop(): void {
-    this._hasStarted.next(false);
-  }
-
-  constructor() { }
 
   ngOnInit() {
   }
 
   ngOnDestroy() {
     this._takeUntil.next(true);
+  }
+
+  getGridWidthPercent() {
+    return this._gameService.getGridWidthPercent();
+  }
+
+  updateCell(i, j) {
+    this._gameService.updateCell(i, j);
   }
 }

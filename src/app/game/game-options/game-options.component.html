@@ -1,0 +1,23 @@
+<h3>Options</h3>
+<div class="dropdown-divider"></div>
+<div class="form-group">
+  <label for="tps">Iterations Per Second</label>
+  <select class="form-control" name="tps" [(ngModel)]="ticksPerSecond">
+    <option *ngFor="let x of speedOptions" [value]="x" [selected]="ticksPerSecond == x">{{x}}</option>
+  </select>
+</div>
+
+<div class="form-group">
+  <label for="gridSize">Grid Size</label>
+  <select class="form-control" name="gridSize" [(ngModel)]="gridSize" (ngModelChange)="updateGridSize()">
+    <option *ngFor="let x of gridSizes" [value]="x" [selected]="gridSize == x">{{x}}</option>
+  </select>
+</div>
+
+<button class="btn btn-primary btn-lg btn-block" (click)="start()">Start</button>
+<button class="btn btn-secondary btn-lg btn-block" (click)="stop()">Stop</button>
+
+<div *ngIf="(iteration$ | async) as itCount">
+  <div class="dropdown-divider"></div>
+  <h3>Iterations {{itCount}}</h3>
+</div>
