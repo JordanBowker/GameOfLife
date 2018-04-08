@@ -1,6 +1,6 @@
 # Game of Life #
 
-A simulator for Conway's Game of Life.
+A simulator for Conway's Game of Life. https://jordanbowker.github.io/GameOfLife/
 
 ## The Rules ##
 
