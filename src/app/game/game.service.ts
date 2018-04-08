@@ -20,7 +20,7 @@ export class GameService {
   timer$ = this._timer.asObservable().switchMap(ticks => interval(ticks));
   hasStarted$ = this._hasStarted.asObservable();
 
-  private _gameGrid = new BehaviorSubject(new GameGrid(10));
+  private _gameGrid = new BehaviorSubject(new GameGrid(10, false));
   gameGrid$ = this._gameGrid.asObservable();
 
   constructor() { }
@@ -36,13 +36,8 @@ export class GameService {
 
   iterate(): void {
     const game = this._gameGrid.getValue();
-
-    game.cells.forEach(cells => {
-      cells.forEach(cell => {
-        cell.isAlive = !cell.isAlive;
-      });
-    });
-
+    const isGameOver = game.updateGameAndCheckIfOver();
+    if (isGameOver) { this.stop(); }
     this._gameGrid.next(game);
   }
 
@@ -51,14 +46,17 @@ export class GameService {
     return 100 / game.gridLength + '%';
   }
 
-  updateCell(i: number, j: number) {
+  invertCellAliveStatus(i: number, j: number) {
     const game = this._gameGrid.getValue();
     game.cells[i][j].isAlive = !game.cells[i][j].isAlive;
     this._gameGrid.next(game);
   }
 
   updateGridSize(gridSize: number) {
-    this._gameGrid.next(new GameGrid(gridSize));
+    this._gameGrid.next(new GameGrid(gridSize, false));
   }
 
+  randomiseGrid(gridSize: number) {
+    this._gameGrid.next(new GameGrid(gridSize, true));
+  }
 }

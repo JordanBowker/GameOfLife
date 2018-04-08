@@ -14,10 +14,15 @@
   </select>
 </div>
 
-<button class="btn btn-primary btn-lg btn-block" (click)="start()">Start</button>
-<button class="btn btn-secondary btn-lg btn-block" (click)="stop()">Stop</button>
+<button class="btn btn-success btn-lg btn-block" (click)="start()">Start</button>
+<button class="btn btn-danger btn-lg btn-block" (click)="stop()">Stop</button>
+<button class="btn btn-secondary btn-lg btn-block" (click)="clearBoard()">Clear</button>
+<div class="dropdown-divider"></div>
+<button class="btn btn-info btn-lg btn-block" (click)="randomise()">Randomise</button>
 
-<div *ngIf="(iteration$ | async) as itCount">
-  <div class="dropdown-divider"></div>
-  <h3>Iterations {{itCount}}</h3>
+<div *ngIf="gameStarted$ | async">
+  <div *ngIf="(iteration$ | async) as itCount">
+    <div class="dropdown-divider"></div>
+    <h3>Iterations {{itCount}}</h3>
+  </div>
 </div>

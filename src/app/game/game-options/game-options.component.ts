@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { never } from 'rxjs/observable/never';
@@ -13,12 +14,14 @@ import { GameService } from './../game.service';
 export class GameOptionsComponent implements OnInit, OnDestroy {
 
   ticksPerSecond = 1;
-  speedOptions = [0.5, 1, 2];
+  speedOptions = [1, 2, 4, 10];
 
   gridSize = 10;
   gridSizes = [10, 20, 30];
-
   private _takeUntil = new Subject<boolean>();
+  private _gameStarted = new BehaviorSubject<boolean>(false);
+
+  gameStarted$ = this._gameStarted.asObservable();
 
   iteration$ = this._gameService.hasStarted$.switchMap((started) => started ? this._gameService.timer$ : never())
     .map(x => x as number + 1)
@@ -35,7 +38,12 @@ export class GameOptionsComponent implements OnInit, OnDestroy {
     this._takeUntil.next(true);
   }
 
+  updateGridSize(): void {
+    this._gameService.updateGridSize(this.gridSize);
+  }
+
   start(): void {
+    this._gameStarted.next(true);
     this._gameService.start(this.ticksPerSecond);
   }
 
@@ -43,7 +51,15 @@ export class GameOptionsComponent implements OnInit, OnDestroy {
     this._gameService.stop();
   }
 
-  updateGridSize(): void {
-    this._gameService.updateGridSize(this.gridSize);
+  clearBoard(): void {
+    this._gameStarted.next(false);
+    this.stop();
+    this.updateGridSize();
   }
+
+  randomise() {
+    this.clearBoard();
+    this._gameService.randomiseGrid(this.gridSize);
+  }
+
 }

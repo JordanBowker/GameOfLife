@@ -5,7 +5,7 @@
         <tbody>
           <tr *ngFor="let cells of gameGrid.cells; let i = index">
             <td [ngStyle]="{'width':getGridWidthPercent(),'padding-bottom':getGridWidthPercent()}" *ngFor="let cell of cells; let j =index"
-              [ngClass]="(cell.isAlive)?'aliveCell':'deadCell'" (click)="updateCell(i,j)">
+              [ngClass]="(cell.isAlive)?'aliveCell':'deadCell'" (click)="invertCellAliveStatus(i,j)">
             </td>
           </tr>
         </tbody>

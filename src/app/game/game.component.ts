@@ -32,7 +32,7 @@ export class GameComponent implements OnInit, OnDestroy {
     return this._gameService.getGridWidthPercent();
   }
 
-  updateCell(i, j) {
-    this._gameService.updateCell(i, j);
+  invertCellAliveStatus(i, j) {
+    this._gameService.invertCellAliveStatus(i, j);
   }
 }
